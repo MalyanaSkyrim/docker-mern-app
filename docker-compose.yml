@@ -1,0 +1,27 @@
+version: "3"
+services:
+  client:
+    container_name: react-client
+    restart: always # if it fails it will restart
+    build: ./posts-list # location of the docker file
+    ports:
+      - "3500:3000"
+    depends_on: [api]
+  api:
+    container_name: node-api
+    restart: always # if it fails it will restart
+    build: ./posts-api
+    ports:
+      - "5500:5500"
+    depends_on: [db] # start the api after the db is started
+    links:
+      - db
+  db:
+    container_name: mongo
+    image: mongo
+    volumes:
+      - data-mongo:/data/db
+    ports:
+      - "27018:27017"
+volumes:
+  data-mongo:
