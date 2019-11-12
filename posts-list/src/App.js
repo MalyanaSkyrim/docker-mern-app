@@ -10,8 +10,8 @@ function App() {
     <div className="container">
       <CreatePost></CreatePost>
       <ListPosts></ListPosts>
-      <Notifications></Notifications>
-      <Loader></Loader>
+      {/* <Notifications></Notifications>
+      <Loader></Loader>  */}
     </div>
   );
 }

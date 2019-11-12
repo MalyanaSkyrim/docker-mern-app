@@ -7,7 +7,8 @@ const types = {
   STOP_LOADER: "stop_loader",
   NOTIFY: "notify",
   ClOSE_NOTIF: "close_notif",
-  EDIT_POST: "edit_post"
+  EDIT_POST: "edit_post",
+  INPUT_CHANGE: "input_change"
 };
 
 export default types;

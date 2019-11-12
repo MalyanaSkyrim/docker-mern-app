@@ -8,6 +8,7 @@ const postsReducer = (state, action) => {
     }
     case types.ADD_POST: {
       const posts = [...state.posts];
+      console.log(posts);
       posts.push(payload);
       return { ...state, posts };
     }
@@ -24,7 +25,8 @@ const postsReducer = (state, action) => {
     }
 
     case types.EDIT_POST: {
-      return { ...state, edit: payload };
+      const edit = state.edit;
+      return { ...state, edit: { ...edit, ...payload, update: true } };
     }
 
     case types.DELETE_POST: {
@@ -51,6 +53,12 @@ const postsReducer = (state, action) => {
         notif => notif.id != payload
       );
       return { ...state, listNotif };
+    }
+
+    case types.INPUT_CHANGE: {
+      const newEdit = { ...state.edit, ...payload };
+      console.log({ newEdit });
+      return { ...state, edit: newEdit };
     }
 
     default:

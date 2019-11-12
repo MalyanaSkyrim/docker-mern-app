@@ -13,8 +13,7 @@ class Store extends EventEmitter {
       edit: {
         title: "",
         content: "",
-        update: false,
-        post: {}
+        update: false
       }
     };
   }
@@ -37,6 +36,7 @@ class Store extends EventEmitter {
 
   handleActions = action => {
     this.state = postReducer(this.state, action);
+    console.log(this.state);
     this.emitChange();
   };
 }

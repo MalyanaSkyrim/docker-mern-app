@@ -1,20 +1,19 @@
-import React from "react";
-import { useDispatch } from "react-redux";
+import React, { Component } from "react";
+import dispatcher from "../state_managment/dispatcher";
 import { deletePost } from "../state_managment/actions";
 import types from "../state_managment/actionTypes";
+import Subscrip from "../state_managment/Subscrip";
 
 const Post = post => {
-  const { id, title, content } = post;
-  const dispatch = useDispatch();
-  const editPost_ = () =>
-    dispatch({
+  const { title, content } = post;
+  const editPost = () =>
+    dispatcher.dispatch({
       type: types.EDIT_POST,
       payload: {
         update: true,
-        post
+        ...post
       }
     });
-  const deletePost_ = () => dispatch(deletePost(post));
 
   return (
     <div className="post">
@@ -23,10 +22,10 @@ const Post = post => {
         <p className="post__content">{content}</p>
       </div>
       <div className="form__group form__group--btn form__group--post">
-        <button onClick={editPost_} className="btn btn--update">
+        <button onClick={editPost} className="btn btn--update">
           Update
         </button>
-        <button onClick={deletePost_} className="btn btn--delete">
+        <button onClick={() => deletePost(post)} className="btn btn--delete">
           Delete
         </button>
       </div>

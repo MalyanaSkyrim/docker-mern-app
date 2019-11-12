@@ -1,74 +1,77 @@
 import uuid from "uuid/v1";
 import types from "./actionTypes";
+import dispatcher from "../state_managment/dispatcher";
 import db from "../db";
 
-const handleError = (err, dispatch) => {
+const handleError = err => {
   console.log(err);
-  dispatch({ type: types.STOP_LOADER });
-  // dispatch({
+  dispatcher.dispatch({ type: types.STOP_LOADER });
+  // dispatcher.dispatch({
   //   type: types.NOTIFY,
   //   payload: { id: uuid(), type: "error", msg }
   // });
 };
 
-export const loadPosts = () => async dispatch => {
+export const loadPosts = async () => {
   try {
-    dispatch({ type: types.START_LOADER });
+    dispatcher.dispatch({ type: types.START_LOADER });
     const data = await db.getAllPosts();
-    dispatch({
+    console.log(data);
+    dispatcher.dispatch({
       type: types.LOAD_POSTS,
       payload: data
     });
-    dispatch({ type: types.STOP_LOADER });
+    dispatcher.dispatch({ type: types.STOP_LOADER });
   } catch (err) {
-    handleError(err, dispatch);
+    handleError(err);
   }
 };
 
-export const addPost = post => async dispatch => {
+export const addPost = async post => {
   try {
-    dispatch({ type: types.START_LOADER });
+    dispatcher.dispatch({ type: types.START_LOADER });
     const msg = await db.createPost(post);
-
-    dispatch({ type: types.ADD_POST, payload: post });
-    dispatch({ type: types.STOP_LOADER });
-    dispatch({
+    dispatcher.dispatch({ type: types.ADD_POST, payload: post });
+    dispatcher.dispatch({ type: types.STOP_LOADER });
+    dispatcher.dispatch({
       type: types.NOTIFY,
       payload: { id: uuid(), type: "success", msg }
     });
   } catch (err) {
-    return handleError(err, dispatch);
+    return handleError(err);
   }
 };
 
-export const deletePost = post => async dispatch => {
+export const deletePost = async post => {
   try {
-    dispatch({ type: types.START_LOADER });
+    dispatcher.dispatch({ type: types.START_LOADER });
     const msg = await db.deletePost(post);
 
-    dispatch({ type: types.DELETE_POST, payload: post.id });
-    dispatch({ type: types.STOP_LOADER });
-    dispatch({
+    dispatcher.dispatch({ type: types.DELETE_POST, payload: post.id });
+    dispatcher.dispatch({ type: types.STOP_LOADER });
+    dispatcher.dispatch({
       type: types.NOTIFY,
       payload: { id: uuid(), type: "success", msg }
     });
   } catch (err) {
-    handleError(err, dispatch);
+    handleError(err);
   }
 };
 
-export const updatePost = post => async dispatch => {
+export const updatePost = async post => {
   try {
-    dispatch({ type: types.START_LOADER });
+    dispatcher.dispatch({ type: types.START_LOADER });
     const msg = await db.updatePost(post);
 
-    dispatch({ type: types.UPDATE_POST, payload: post });
-    dispatch({ type: types.STOP_LOADER });
-    dispatch({
+    dispatcher.dispatch({ type: types.UPDATE_POST, payload: post });
+    dispatcher.dispatch({ type: types.STOP_LOADER });
+    dispatcher.dispatch({
       type: types.NOTIFY,
       payload: { id: uuid(), type: "success", msg }
     });
   } catch (err) {
-    handleError(err, dispatch);
+    handleError(err);
   }
 };
+
+db.changeCB = () => loadPosts();
