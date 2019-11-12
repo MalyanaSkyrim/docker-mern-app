@@ -8,9 +8,9 @@ const postsReducer = (state, action) => {
     }
     case types.ADD_POST: {
       const posts = [...state.posts];
-      console.log(posts);
+      const edit = state.edit;
       posts.push(payload);
-      return { ...state, posts };
+      return { ...state, posts, edit: { ...edit, title: "", content: "" } };
     }
 
     case types.UPDATE_POST: {
@@ -21,7 +21,12 @@ const postsReducer = (state, action) => {
         }
         return post;
       });
-      return { ...state, posts, edit: { update: false, post: {} } };
+      const edit = state.edit;
+      return {
+        ...state,
+        posts,
+        edit: { ...edit, title: "", content: "", update: false }
+      };
     }
 
     case types.EDIT_POST: {
